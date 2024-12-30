@@ -22,3 +22,26 @@ def pid_control(cx, frame_center, prev_error, Kp=0.1, Ki=0.01, Kd=0.5):
     control = P + I + D
     return control, error
 
+frame = np.ones((400, 400, 3), dtype=np.uint8) * 255  # White background
+cv2.line(frame, (50, 200), (350, 200), (0, 0, 0), 5)  # Black line
+
+robot_pos = 50
+frame_center = frame.shape[1] // 2
+
+prev_error = 0
+
+while True:
+    cx = process_frame(frame)  # Line centroid
+    if cx:
+        control, prev_error = pid_control(cx, frame_center, prev_error)
+        robot_pos += int(control)  # Update robot position
+    
+    # Visualize robot
+    display_frame = frame.copy()
+    cv2.circle(display_frame, (robot_pos, 200), 10, (255, 0, 0), -1)
+    
+    cv2.imshow("Line Following Simulation", display_frame)
+    if cv2.waitKey(30) & 0xFF == 27:
+        break
+
+cv2.destroyAllWindows()
