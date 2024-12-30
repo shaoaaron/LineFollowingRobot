@@ -32,15 +32,21 @@ prev_error = 0
 
 while True:
     cx = process_frame(frame)  # Line centroid
-    if cx:
+    if cx != frame_center:
         control, prev_error = pid_control(cx, frame_center, prev_error)
-        robot_pos += int(control)  # Update robot position
+        print(f"Control: {control}")  # Debug control signal
+        # Update robot position based on control signal
+        robot_pos += int(control * 10)  # Scale control for visible movement
+    else:
+        print("Robot is centered.")
     
     # Visualize robot
     display_frame = frame.copy()
     cv2.circle(display_frame, (robot_pos, 200), 10, (255, 0, 0), -1)
     
     cv2.imshow("Line Following Simulation", display_frame)
+    print(f"Robot Position: {robot_pos}")
+
     if cv2.waitKey(30) & 0xFF == 27:
         break
 
