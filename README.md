@@ -1,1 +1,1 @@
-
+Simple project that experiments with ROS. Code takes in an image with a white background and black path. The role of the "robot" is to navigate the path, adhering to its boundaries by altering its positioning depending on the path layout. The robot will calculate the derivative and various other values to maintain the correct direction. The python file already contains an example of a straight path from left to right.
